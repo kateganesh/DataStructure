@@ -1,10 +1,8 @@
 package com.ganesh.ds.linkedList;
 
-import java.util.HashSet;
-
 import com.ganesh.ds.common.Node;
 
-public class RemoveDuplicates {
+public class ReturnKthtoLast {
 
 	public static void main(String[] args) {
 		Node head = new Node();
@@ -17,13 +15,15 @@ public class RemoveDuplicates {
 		head = insertNodeAtEnd(head,4);
 		head = insertNodeAtEnd(head,6);
 		head = insertNodeAtEnd(head,7);
-		head = insertNodeAtEnd(head,7);
+		head = insertNodeAtEnd(head,9);
 		head = insertNodeAtEnd(head,8);
 		displayLinkedList(head);
-		//head = removeDuplicates(head);
-		removeDuplicateWithoutHasset(head);
+		printKthToLast(head, 3);
+		Node n = kthToLastUsingIterative(head, 3);
 		System.out.println("$$$$$$$$$$$$$$$$$$$$");
-		displayLinkedList(head);
+		System.out.println(" kth node is "+ n.data);
+		//displayLinkedList(head);
+
 	}
 	
 	public static Node insertNodeAtEnd(Node head, int data) {
@@ -46,38 +46,33 @@ public class RemoveDuplicates {
 		}
 	}
 	
-	public static Node removeDuplicates(Node head) {
-		HashSet<Integer> set = new HashSet<Integer>();
-		Node previous = null;
-		Node n = head;
-		while(n != null) {
-			if(set.contains(n.data)) {
-				previous.next = n.next;
-			}
-			else {
-				set.add(n.data);
-				previous = n;
-			}
-			n=n.next;
+	public static int printKthToLast(Node head, int k) {
+		if(head == null) {
+			return 0;
 		}
-		return head;
+		
+		int index = printKthToLast(head.next, k) + 1;
+		if(index == k) {
+			System.out.println(k +"th to last node is "+head.data);
+		}
+		return index;
 	}
 	
-	
-	public static void removeDuplicateWithoutHasset(Node head) {
-		Node current = head;
-		while(current != null) {
-			Node runner = current;
-			while(runner.next != null) {
-				if(runner.next.data == current.data) {
-					runner.next = runner.next.next;
-					runner = runner.next;
-				}
-				else {
-					runner = runner.next;
-				}
+	public static Node kthToLastUsingIterative(Node head, int k) {
+		Node p1 = head;
+		Node p2 = head;
+		for(int i=0; i<k;i++) {
+			if(p1 == null) {
+				return null;
 			}
-			current = current.next;
+			p1=p1.next;
 		}
+		
+		while(p1 != null) {
+			p1 = p1.next;
+			p2 = p2.next;
+		}
+		return p2;
 	}
+
 }

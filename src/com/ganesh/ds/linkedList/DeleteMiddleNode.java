@@ -1,12 +1,11 @@
 package com.ganesh.ds.linkedList;
 
-import java.util.HashSet;
-
 import com.ganesh.ds.common.Node;
 
-public class RemoveDuplicates {
+public class DeleteMiddleNode {
 
 	public static void main(String[] args) {
+		
 		Node head = new Node();
 		head.next=null;
 		head.data = 1;
@@ -17,15 +16,18 @@ public class RemoveDuplicates {
 		head = insertNodeAtEnd(head,4);
 		head = insertNodeAtEnd(head,6);
 		head = insertNodeAtEnd(head,7);
-		head = insertNodeAtEnd(head,7);
+		head = insertNodeAtEnd(head,9);
 		head = insertNodeAtEnd(head,8);
+		Node n = head.next.next.next.next.next;
 		displayLinkedList(head);
-		//head = removeDuplicates(head);
-		removeDuplicateWithoutHasset(head);
+		boolean flag = deleteMiddleNode(n);
 		System.out.println("$$$$$$$$$$$$$$$$$$$$");
+		System.out.println(" Middle node delete : "+flag );
 		displayLinkedList(head);
 	}
 	
+	
+
 	public static Node insertNodeAtEnd(Node head, int data) {
 		Node n = head;
 		while(n.next !=null) {
@@ -46,38 +48,16 @@ public class RemoveDuplicates {
 		}
 	}
 	
-	public static Node removeDuplicates(Node head) {
-		HashSet<Integer> set = new HashSet<Integer>();
-		Node previous = null;
-		Node n = head;
-		while(n != null) {
-			if(set.contains(n.data)) {
-				previous.next = n.next;
-			}
-			else {
-				set.add(n.data);
-				previous = n;
-			}
-			n=n.next;
+	private static boolean deleteMiddleNode(Node n) {
+		if(n == null || n.next == null) {
+			return false;
 		}
-		return head;
+		
+		Node next = n.next;
+		n.data = next.data;
+		n.next = next.next;
+		next.next = null;		
+		return true;
 	}
-	
-	
-	public static void removeDuplicateWithoutHasset(Node head) {
-		Node current = head;
-		while(current != null) {
-			Node runner = current;
-			while(runner.next != null) {
-				if(runner.next.data == current.data) {
-					runner.next = runner.next.next;
-					runner = runner.next;
-				}
-				else {
-					runner = runner.next;
-				}
-			}
-			current = current.next;
-		}
-	}
+
 }
